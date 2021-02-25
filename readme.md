@@ -35,14 +35,13 @@ function trainingEvent(title, date, duration, resources, instructors, project) {
 
 SI-EventLoop
 	events.push(new trainingEvent(
-            "SI-E-Title", 
-            "SI-E-ShortDateStart", 
-            parseFloat("SI-E-DurationH"), 
-            "SI-E-OwnersNamesAll",
-            "SI-E-NamesIn-816-Group",
-            "SI-E-Custom1"
-        );
-	);
+        "SI-E-Title", 
+        "SI-E-ShortDateStart", 
+        parseFloat("SI-E-DurationH"), 
+        "SI-E-OwnersNamesAll",
+        "SI-E-NamesIn-816-Group",
+        "SI-E-Custom1"
+    ));
 SI-EventLoopEnd
 ```
 

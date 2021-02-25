@@ -2,23 +2,23 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resource Usage</title>
-	 
+     
 <style>
-	body {
-		font-family: sans-serif;
-		padding: 10px;
-	}
+    body {
+        font-family: sans-serif;
+        padding: 10px;
+    }
 
-	#wrapper {
-		width: 85%;
-		margin: auto;
-	}
+    #wrapper {
+        width: 85%;
+        margin: auto;
+    }
 
-	table {
-		width: 100%;
-	}
+    table {
+        width: 100%;
+    }
 
     #displayData h2 {
         margin-bottom: 5px;
@@ -39,26 +39,26 @@
 <meta name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> 
 <body>
 <div id="wrapper">
-	<div id="displayData"></div>
+    <div id="displayData"></div>
 </div>
 
 <script>
-	/*
-	 * Resource Usage Report
-	 * Author: Shane Chamblee
-	 * Date: 10-25-2019
-	 *
-	 * This report totals the monthly usage hours of each simulator (total hours and business-day-only hours)and then calculates the percentage of goal reached. This report is intended for event data spanning a calendar year.
-	 *
-	 * This report makes use of the Schedule It application's data tags for Customeromizing reports.
-	 * See documentation on Schedule It data tags. 
-	 * http://www.scheduleit.co.uk/faq/10055-Customeromise-the-reports-templates-and-change-the-tags#rep
-	 * 
-	 * This document should be used as a template when generating a text report from within the Schedule It app.
-	 *
-	 * 
-	 *
-	 */
+    /*
+     * Resource Usage Report
+     * Author: Shane Chamblee
+     * Date: 10-25-2019
+     *
+     * This report totals the monthly usage hours of each simulator (total hours and business-day-only hours)and then calculates the percentage of goal reached. This report is intended for event data spanning a calendar year.
+     *
+     * This report makes use of the Schedule It application's data tags for Customeromizing reports.
+     * See documentation on Schedule It data tags. 
+     * http://www.scheduleit.co.uk/faq/10055-Customeromise-the-reports-templates-and-change-the-tags#rep
+     * 
+     * This document should be used as a template when generating a text report from within the Schedule It app.
+     *
+     * 
+     *
+     */
 
 
     //----------------------------
@@ -73,48 +73,48 @@
         this.resources = resources;
     }
 
-	//------------------------------------
-	// < DATA CAPTURE FROM SCHEDULE IT APP >
-	//------------------------------------
-	//
-	//  Receive data from Schedule It application via Schedule It data tags
-	//  Instantiate event objects, and load into events array
+    //------------------------------------
+    // < DATA CAPTURE FROM SCHEDULE IT APP >
+    //------------------------------------
+    //
+    //  Receive data from Schedule It application via Schedule It data tags
+    //  Instantiate event objects, and load into events array
 
-	let events = [];
+    let events = [];
 
-	SI-EventLoop
-	events.push(new trainingEvent(
-		"SI-E-Title", 
-		"SI-E-ShortDateStart", 
-		parseFloat("SI-E-DurationH"), 
-		"SI-E-OwnersNamesAll")
-	);
-	SI-EventLoopEnd
-	
-	
-	//-------------------------
-	//   < CALCULATE TOTALS >
-	//-------------------------
+    SI-EventLoop
+    events.push(new trainingEvent(
+        "SI-E-Title", 
+        "SI-E-ShortDateStart", 
+        parseFloat("SI-E-DurationH"), 
+        "SI-E-OwnersNamesAll")
+    );
+    SI-EventLoopEnd
+    
+    
+    //-------------------------
+    //   < CALCULATE TOTALS >
+    //-------------------------
 
-	const totalBusinessDays = (() => {
-		let dateRangeStart = (events[0].date.getMonth() + 1) + "/" + events[0].date.getDate() + "/" + events[0].date.getFullYear();
-		let dateRangeEnd = (events[events.length -1].date.getMonth() + 1) + "/" + events[events.length -1].date.getDate() + "/" + events[events.length -1].date.getFullYear();
-		let businessDays = 0;
-		for (let d = new Date(dateRangeStart); d < new Date(dateRangeEnd); d.setDate(d.getDate() + 1)) {
-			if (d.getDay() > 0 && d.getDay() < 6) {
-				businessDays++;
-			}
-		}
-		return businessDays;
-	})();
+    const totalBusinessDays = (() => {
+        let dateRangeStart = (events[0].date.getMonth() + 1) + "/" + events[0].date.getDate() + "/" + events[0].date.getFullYear();
+        let dateRangeEnd = (events[events.length -1].date.getMonth() + 1) + "/" + events[events.length -1].date.getDate() + "/" + events[events.length -1].date.getFullYear();
+        let businessDays = 0;
+        for (let d = new Date(dateRangeStart); d < new Date(dateRangeEnd); d.setDate(d.getDate() + 1)) {
+            if (d.getDay() > 0 && d.getDay() < 6) {
+                businessDays++;
+            }
+        }
+        return businessDays;
+    })();
 
-	function getResourceTotalHRS(r) {
+    function getResourceTotalHRS(r) {
         const rEvents = events.filter((e) => e.resources.indexOf(r) > -1);
-		let rTotal = rEvents.reduce((total, e) => {
-			return total + e.duration;
-		},0);
-		return rTotal;
-	}
+        let rTotal = rEvents.reduce((total, e) => {
+            return total + e.duration;
+        },0);
+        return rTotal;
+    }
 
 
 //*****************************************************************************************************
@@ -129,50 +129,51 @@
 //*****************************************************************************************************
 
     let myResources = [
-		{
-			name: "Resource 1",
-			dailyUsageTarget: 16,
-            getGoalPercentage: function() {return (this.totalHours / this.targetHours * 100).toFixed(2)}
-		},
         {
-			name: "Resource 2",
-			dailyUsageTarget: 8,
+            name: "Resource 1",
+            dailyUsageTarget: 16,
             getGoalPercentage: function() {return (this.totalHours / this.targetHours * 100).toFixed(2)}
-		},
+        },
         {
-			name: "Resource 3",
-			dailyUsageTarget: 12,
+            name: "Resource 2",
+            dailyUsageTarget: 8,
             getGoalPercentage: function() {return (this.totalHours / this.targetHours * 100).toFixed(2)}
-		}
-	];
+        },
+        {
+            name: "Resource 3",
+            dailyUsageTarget: 12,
+            getGoalPercentage: function() {return (this.totalHours / this.targetHours * 100).toFixed(2)}
+        }
+    ];
 //*****************************************************************************************************
 //*****************************************************************************************************
 //*****************************************************************************************************
 
-	//determine and set additional properties for each selected resource	
-	myResources.map((r) => {
+    //determine and set additional properties for each selected resource	
+    myResources.map((r) => {
         r.totalHours = getResourceTotalHRS(r.name);
         r.targetHours = totalBusinessDays * r.dailyUsageTarget;
     });
-	
-	
-	//-------------------------
-	//   < OUTPUT >
-	//-------------------------
-	let display = document.getElementById('displayData');
+    
+    
+    //-------------------------
+    //   < OUTPUT >
+    //-------------------------
+    let display = document.getElementById('displayData');
 
     //determine date range
     let dateRangeStart = (events[0].date.getMonth() + 1) + "/" + events[0].date.getDate() + "/" + events[0].date.getFullYear();
-	let dateRangeEnd = (events[events.length -1].date.getMonth() + 1) + "/" + events[events.length -1].date.getDate() + "/" + events[events.length -1].date.getFullYear();
+    let dateRangeEnd = (events[events.length -1].date.getMonth() + 1) + "/" + events[events.length -1].date.getDate() + "/" + events[events.length -1].date.getFullYear();
     
     display.innerHTML = "<p>Resource Usage (" + dateRangeStart + " to " + dateRangeEnd + ")</p>";    
     myResources.map((r) => {
         display.innerHTML += "<h2>" + r.name +
             "</h2><p>Total Hours: <span class='hourTotal'>" + r.totalHours + 
                 "</span></p><p>Target Hours: <span class='hourTotal'>" + r.targetHours + 
-                    "</span></p><p><span class='goalPerc'>" + r.getGoalPercentage() + "%</span> of Goal</p>";
+                    "</span></p><p><span class='goalPerc'>" + r.getGoalPercentage() + 
+                    "%</span> of Goal</p>";
     });
-	
+    
 </script>
 </body>
 </html>

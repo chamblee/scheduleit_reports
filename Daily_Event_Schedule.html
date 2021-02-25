@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Event Schedule</title>
+	<style>
+		body {
+			 font-family: sans-serif;
+			 padding: 10px;
+		 }
+ 
+		 .reportTitle {
+			 color: white;
+			 text-align: center;
+			 letter-spacing: 0.07em;
+			 padding: 10px;
+			 background-color: steelblue;
+			 border-radius: 25px;
+		 }
+		 
+		 #schedule {
+			 max-width: 90vw;
+			 margin: auto;
+		 }
+ 
+		 .dayGroup {
+			 margin-bottom: 10px;
+		 }
+		 
+		 .dayHeading {
+			 font-weight: bold;
+			 font-size: 14pt;
+			 letter-spacing: 0.07em;
+			 padding: 20px;
+			 border-bottom: 8px solid lightgray;
+		 }
+		 
+		 td {
+			 border-bottom: 1px solid lightgray;
+			 border-right: 1px solid lightgray;
+		 }
+ 
+		 tr td:last-child {
+			 border-right: 0;
+		 }
+		 
+		 th, td {
+			 padding: 4px 5px;
+			 font-size: 11pt;
+		 }
+		 
+		 td.start, td.end, td.duration {
+			 width: 85px;
+			 text-align: center;
+		 }
+	 </style>
+</head>
+<body>
+<header id="pageHead"></header>
+<section id='schedule'></section>
+<footer id='pageFooter'></footer>
+
+<script>
+	/*
+	 * Events Grouped by Day
+	 * Author: Shane Chamblee
+	 * Date: 4-25-2017
+	 *
+	 */
+	
+	var events = [],
+	titles = [],
+	dates = [],
+	startTimes = [],
+	endTimes = [],
+	resources = [],
+	durations = [],
+	notes = [],
+	schedByDay = [],
+	sortedDates = dates.sort(function(a,b) {return a-b}); //sorted for later comparison to identify unique dates within the collection
+	
+	
+	/*   < DATA CAPTURE >     
+
+			* We make use of the Schedule It application's data tags for customizing reports.
+				* See documentation on Schedule It data tags. 
+				* http://www.scheduleit.co.uk/faq/10055-customise-the-reports-templates-and-change-the-tags#rep
+			
+			* The Schedule It application loops through the set of events specified by the user within the app 
+			* and injects into this html file (selected by the user when running the report)
+			
+			* Below, we collect the event data parsed via the Schedule It loop into the corresponding arrays
+	*/
+	
+	SI-EventLoop
+	titles.push("SI-E-Title");
+	dates.push("SI-E-ShortDateStart");
+	startTimes.push("SI-E-ShortTimeStart");
+	endTimes.push("SI-E-ShortTimeEnd");
+	resources.push("SI-E-OwnersNamesAll");
+	durations.push("SI-E-DurationH");
+	notes.push("SI-E-FormatNotes");
+	SI-EventLoopEnd
+	
+	/*   </ END DATA CAPTURE >   */
+	
+
+	/*   < EVENT OBJECTS >     
+	
+			* An event object should be generated for each event received from Schedule It.
+			* Each event object's properties should correspond to the event data received via the Schedule It data tags.
+			* A uniqueDate object should be generated for each unique date within the collection of dates received from Schedule It
+			in order to collect and present a complete agenda of events for each day.
+	*/
+	
+	//Define event prototype
+	function event(title, date, day, start, end, resources, duration, notes) {
+		this.title = title;
+		this.date = date;
+		this.day = day;
+		this.start = start;
+		this.end = end;
+		this.resources = resources;
+		this.duration = duration;
+		this.notes = notes;
+	}
+	
+	//Define uniqueDate prototype
+	function uniqueDate(name, date, agenda) {
+		this.name = name;
+		this.date = date;
+		this.agenda = agenda;
+	}
+	
+	//Identify unique dates and store in schedByDay
+	
+	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; //Name Week Days
+	
+	for (i=0; i<sortedDates.length; i++) {
+		if (sortedDates[i] != sortedDates[i + 1]) {
+			var d = new Date(sortedDates[i]);
+			schedByDay.push(new uniqueDate(weekDays[d.getDay()], d, []));
+		}
+	}
+	
+	//Create event objects and store in events
+	for (i=0; i<titles.length; i++) {
+		var d = new Date(dates[i]);
+		var day = weekDays[d.getDay()]
+		events.push(new event(titles[i], d, day, startTimes[i], endTimes[i], resources[i], durations[i], notes[i]));
+	}
+	
+	
+	//Load all events into their day's agenda
+	for (i=0; i<events.length; i++) {
+		for (j=0; j<schedByDay.length; j++) {
+			if (events[i].date.toString() == schedByDay[j].date.toString()) {
+				schedByDay[j].agenda.push(events[i]);
+			}
+		}
+	}
+	/*   </ END EVENT OBJECTS > */
+
+	
+	
+	/*   < OUTPUT >  */
+	
+	//Output daily schedule
+	outputDailySched();
+	function outputDailySched() {
+		var day = document.createElement('DIV');
+			day.className = 'dayGroup';
+			day.innerHTML += "<h2 class='reportTitle'>Event Schedule (" + schedByDay[0].date.toLocaleDateString() + " - " + schedByDay[schedByDay.length - 1].date.toLocaleDateString() + ")</h2>";
+		for (i=0; i<schedByDay.length; i++) {
+			day.innerHTML += "<p class='dayHeading'>"+schedByDay[i].name+" - "+schedByDay[i].date.toLocaleDateString()+"</p>";
+			
+			var displayTable = document.createElement('TABLE');
+			displayTable.className = "schedTable";
+			displayTable.innerHTML = "<tr id='tableHead'><th class='title'>Event</th><th class='start'>Start</th><th class='end'>End</th><th class='duration'>Duration</th><th class='resources'>Resources</th><th class='notes'>Notes</th></tr>";
+			for (j=0; j<schedByDay[i].agenda.length; j++) {
+				displayTable.innerHTML += "<tr><td class='title'>"
+					+schedByDay[i].agenda[j].title+"</td><td class='start'>"
+						+schedByDay[i].agenda[j].start+"</td><td class='end'>"
+							+schedByDay[i].agenda[j].end+"</td><td class='duration'>"
+								+schedByDay[i].agenda[j].duration+" hrs</td><td class='resources'>"
+									+schedByDay[i].agenda[j].resources+"</td><td class='notes'>"
+										+schedByDay[i].agenda[j].notes+"</td></tr>";
+			}
+			day.appendChild(displayTable);
+			document.getElementById('schedule').appendChild(day);
+		}
+	}
+
+	/*   </ END OUTPUT >  */
+</script>
+</body>
+</html>

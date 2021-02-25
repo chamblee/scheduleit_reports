@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<!-- saved from url=(0088)file:///C:/Users/chamblee/Documents/Schedule%20it%207/temp/Scheduleit_210224_224100.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+    <title>Instructor Schedules</title>
+	<style>
+	   body {
+		    font-family: sans-serif;
+			padding: 10px;
+		}
+
+		nav {
+			position: fixed;
+			left: 2%;
+			width: 100px;
+			height: 85%;
+			padding-top: 40px;
+			overflow-y: scroll;
+		}
+
+		nav a {
+			display: block;
+			color: gray;
+			margin-bottom: 5px;
+		}
+		
+		h3 {
+			background-color: lightblue;
+			padding: 10px 25px;
+			border-radius: 20px;
+			margin-top: 50px;
+		}
+
+		#schedule {
+			margin-left: 15%;
+		}
+		
+		.instructorSchedule {
+			padding: 5px;
+		}
+		
+		table {
+			width: 100%;
+		}
+		
+		td {
+			border-bottom: 1px solid lightgray;
+			border-right: 1px solid lightgray;
+		}
+		
+		th, td {
+			padding: 5px;
+			font-size: 11pt;
+		}
+		
+		td.start, td.end, td.duration, td.job {
+			text-align: center;
+		}
+		
+		td.instructor {
+			text-align: center;
+		}
+
+		::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 7px;
+		}
+
+		::-webkit-scrollbar-thumb {
+			border-radius: 4px;
+			background-color: rgba(0, 0, 0, .5);
+			box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+		}
+	</style>
+</head>
+<body>
+<nav id="instructorDevice 3s"><a href="file:///C:/Users/chamblee/Documents/Schedule%20it%207/temp/Scheduleit_210224_224100.html#Adam">Adam</a> </nav>
+<section id="schedule"></section>
+<footer id="pageFooter"></footer>
+<script>
+	    /*
+		 * Schedule It Report - Instructor Schedules
+		 * Author: Shane Chamblee
+		 * Date: 2-19-2021
+		*
+		* This report makes use of the Schedule It application's data tags for Customeromizing reports.
+		* See documentation on Schedule It data tags. 
+		* http://www.scheduleit.co.uk/faq/10055-Customeromise-the-reports-templates-and-change-the-tags#rep
+		* 
+		* This document should be used as a template when generating a text report from within the Schedule It app.
+		*
+		*/
+		 
+		//-------------------------------------------
+		//   < CAPTURE OUTPUT FROM SCHEDULE IT APP>
+		//-------------------------------------------
+		
+			// Define Event Prototype
+			function scheduledEvent(title, date, start, end, duration, notes, resources) {
+				this.title = title;
+				this.date = date;
+				this.start = start;
+				this.end = end;
+				this.duration = duration;
+				this.notes = notes;
+				this.resources = resources;
+			}
+			
+			// Receive data from Schedule It application using Schedule It data tags
+			// Build event objects, and load into allEvents array
+			
+			let events = [];
+				
+				
+				events.push(new scheduledEvent("Customer A Capt Upgrade Brief", "10/11/2020", "6:45 AM", "7:15 AM", parseFloat("0.5",10), "", "Gibson, Pullman, Conference Room 1G, Customer A"));
+				
+				events.push(new scheduledEvent("Customer A Capt Upgrade Sim", "10/11/2020", "7:30 AM", "11:30 AM", parseFloat("4",10), "B 2/2 Syllabus", "Gibson, Pullman, Device 1, Customer A, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/11/2020", "11:15 AM", "11:45 AM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer A Capt Upgrade Brief", "10/11/2020", "11:30 AM", "12:00 PM", parseFloat("0.5",10), "", "Gibson, Pullman, Conference Room 1G, Customer A"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/11/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/11/2020", "4:15 PM", "8:15 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/11/2020", "8:15 PM", "8:45 PM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/12/2020", "6:15 AM", "7:15 AM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Pilot IOS Sim", "10/12/2020", "7:00 AM", "11:00 AM", parseFloat("4",10), "IOS Training", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP A Sim", "10/12/2020", "7:30 AM", "11:30 AM", parseFloat("4",10), "Sim# 6", "Boseman, Williams, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/12/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/12/2020", "8:00 AM", "12:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/12/2020", "10:30 AM", "11:30 AM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/12/2020", "11:15 AM", "11:45 AM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/12/2020", "11:30 AM", "12:30 PM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer D CP B Sim", "10/12/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "Sim# 6", "O'Brien_A, Roberts, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/12/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer B Init FTD", "10/12/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "", "Adam, FTD, Customer B, FTD Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/12/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/12/2020", "1:00 PM", "5:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/12/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/12/2020", "4:15 PM", "8:15 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/12/2020", "8:15 PM", "8:45 PM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/13/2020", "6:15 AM", "7:15 AM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Pilot IOS Sim", "10/13/2020", "7:00 AM", "11:00 AM", parseFloat("4",10), "IOS Training", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP A Sim", "10/13/2020", "7:30 AM", "11:30 AM", parseFloat("4",10), "Sim# 7", "Boseman, Williams, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/13/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/13/2020", "8:00 AM", "12:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/13/2020", "10:30 AM", "11:30 AM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/13/2020", "11:15 AM", "11:45 AM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/13/2020", "11:30 AM", "12:30 PM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer D CP B Sim", "10/13/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "Sim# 7", "O'Brien_A, Roberts, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/13/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer B Init FTD", "10/13/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "", "Adam, FTD, Customer B, FTD Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/13/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/13/2020", "1:00 PM", "5:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/13/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer C Ref Sim", "10/13/2020", "4:15 PM", "8:15 PM", parseFloat("4",10), "", "Device 3, Customer C, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer C Ref Brief", "10/13/2020", "8:15 PM", "8:45 PM", parseFloat("0.5",10), "", "Classroom 04, Customer C"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/14/2020", "6:15 AM", "7:15 AM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Pilot IOS Sim", "10/14/2020", "7:00 AM", "11:00 AM", parseFloat("4",10), "IOS Training", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP A Sim", "10/14/2020", "7:30 AM", "11:30 AM", parseFloat("4",10), "Sim# 8", "Boseman, Williams, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer A Ref Acad", "10/14/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "Academics: B 2/2 Syllabus", "Diana, Classroom 01, Customer A, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/14/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/14/2020", "8:00 AM", "12:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/14/2020", "10:30 AM", "11:30 AM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/14/2020", "11:00 AM", "11:30 AM", parseFloat("0.5",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/14/2020", "11:30 AM", "12:30 PM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer A Ref Acad", "10/14/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "Academics: B 2/2 Syllabus", "Diana, Classroom 01, Customer A, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP B Sim", "10/14/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "Sim# 8", "O'Brien_A, Roberts, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/14/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer B Init Sim", "10/14/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "No IP Required", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/14/2020", "1:00 PM", "5:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/14/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/14/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer A Ref Brief", "10/15/2020", "6:45 AM", "7:15 AM", parseFloat("0.5",10), "", "Christine, Diana, Classroom 01, Customer A"));
+				
+				events.push(new scheduledEvent("Customer B Pilot IOS Sim", "10/15/2020", "7:00 AM", "11:00 AM", parseFloat("4",10), "IOS Training", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer A Ref Sim", "10/15/2020", "7:30 AM", "11:30 AM", parseFloat("4",10), "B 2/2 Syllabus", "Christine, Diana, Device 1, Customer A, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/15/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/15/2020", "8:00 AM", "12:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/15/2020", "10:30 AM", "11:30 AM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/15/2020", "11:00 AM", "11:30 AM", parseFloat("0.5",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer A Ref Brief", "10/15/2020", "11:30 AM", "12:00 PM", parseFloat("0.5",10), "", "Christine, Diana, Classroom 01, Customer A"));
+				
+				events.push(new scheduledEvent("Customer D CP A Sim", "10/15/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "Sim# 9", "Boseman, Williams, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/15/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer B Init Sim", "10/15/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "No IP Required", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/15/2020", "1:00 PM", "5:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/15/2020", "3:00 PM", "4:00 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/15/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/15/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer D CP B Sim", "10/15/2020", "4:30 PM", "8:30 PM", parseFloat("4",10), "Sim# 9", "O'Brien_A, Roberts, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/15/2020", "8:30 PM", "9:30 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer A Ref Brief", "10/16/2020", "6:30 AM", "7:15 AM", parseFloat("0.75",10), "", "Christine, Diana, Classroom 01, Customer A"));
+				
+				events.push(new scheduledEvent("Customer B Pilot IOS Sim", "10/16/2020", "7:00 AM", "11:00 AM", parseFloat("4",10), "IOS Training", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer A Ref Sim", "10/16/2020", "7:30 AM", "9:30 AM", parseFloat("2",10), "B 2/2 Syllabus", "Christine, Diana, Device 1, Customer A, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/16/2020", "8:00 AM", "11:00 AM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/16/2020", "8:00 AM", "12:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer A NVG Sim", "10/16/2020", "9:30 AM", "11:30 AM", parseFloat("2",10), "B 2/2 Syllabus Sortie", "Christine, Diana, Device 1, Customer A, NVG Training, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/16/2020", "10:30 AM", "11:30 AM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/16/2020", "11:00 AM", "11:30 AM", parseFloat("0.5",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer A Ref Brief", "10/16/2020", "11:30 AM", "12:00 PM", parseFloat("0.5",10), "", "Christine, Diana, Classroom 01, Customer A"));
+				
+				events.push(new scheduledEvent("Customer D CP A Sim", "10/16/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "Sim# 10 / Course Complete", "Boseman, Williams, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D MX Structures", "10/16/2020", "12:00 PM", "3:00 PM", parseFloat("3",10), "", "Jackson, Classroom 14, Customer D, Academics Training, Maintenance Training"));
+				
+				events.push(new scheduledEvent("Customer B Init Sim", "10/16/2020", "12:00 PM", "4:00 PM", parseFloat("4",10), "No IP Required", "Adam, Device 3, Customer B, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D LM Init Acad", "10/16/2020", "1:00 PM", "5:00 PM", parseFloat("4",10), "Training Aid", "Clarice, Classroom 15, Customer D, Academics Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/16/2020", "3:00 PM", "4:00 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer F Brief", "10/16/2020", "3:30 PM", "4:00 PM", parseFloat("0.5",10), "", "Briefing Room 3, Customer F"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/16/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "Boseman, Williams, Classroom 09, Customer D"));
+				
+				events.push(new scheduledEvent("Customer B Init Brief", "10/16/2020", "4:00 PM", "5:00 PM", parseFloat("1",10), "", "Adam, Classroom 06, Customer B"));
+				
+				events.push(new scheduledEvent("Customer F Continuation Sim", "10/16/2020", "4:15 PM", "8:15 PM", parseFloat("4",10), "", "Device 2, Customer F, Dry Time, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP B Sim", "10/16/2020", "4:30 PM", "8:30 PM", parseFloat("4",10), "Sim# 10 / Course Complete", "O'Brien_A, Roberts, Device 1, Customer D, Simulator Training"));
+				
+				events.push(new scheduledEvent("Customer D CP Brief", "10/16/2020", "8:30 PM", "9:30 PM", parseFloat("1",10), "", "O'Brien_A, Roberts, Classroom 09, Customer D"));
+				
+				
+			// </ CAPTURE OUTPUT FROM SCHEDULE IT APP>
+		
+
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+		//
+		//   SPECIFY INSTRUCTORS BELOW
+		//   Instructor names should match the instructor resource names as they appear in Schedule It
+		//
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+		//
+		//	
+			//instructor names to display
+			let allInstructors = ["Adam", "Amanda", "Amos", "Boseman", "Christine", "Clarice", "David", "Devin", "Diana", "Donovan", "Farmer", "Foster", "Garland", "Gibson", "Heath", "Hernandez", "Jackson", "Martina", "McCloud", "Nelson", "Nunez", "O'Brien_A", "O'Brien_B", "Orson", "Patterson", "Peter", "Porter", "Potts", "Powell_A", "Powell_B", "Pullman", "Roberts", "Thomas", "Valerie", "Williams"];
+		//
+		//
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+		//*****************************************************************************************************
+
+		
+		
+		//-------------------------
+		//   < OUTPUT >
+		//-------------------------
+			let scheduleContent = "";
+			
+			allInstructors.forEach((i) => {
+				//build nav elements
+				document.getElementById('instructorDevice 3s').innerHTML += "<a href='#"+ i.replace("'", "") +"'>"+ i +"</a> ";
+
+				//build schedule display elements
+				let instructorSchedule = document.createElement('DIV');
+				instructorSchedule.className = "instructorSchedule";
+				instructorSchedule.innerHTML = "<h3 id='"+ i.replace("'", "") +"'>"+i+"</h3>";
+				
+				let scheduleTable = document.createElement('TABLE');
+				scheduleTable.innerHTML = "<tr id='tableHead'><th class='dayOfWeek'></th><th class='date'>Date</th><th class='title'>Event</th><th class='start'>Start</th><th class='end'>End</th><th class='duration'>Duration</th><th class='notes'>Notes</th></tr>";
+				
+				//parse events
+				let eventCount = 0;
+				let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+				
+				events.forEach((e) => {
+					if (e.resources.indexOf(i) > -1) {
+						eventCount++;
+						let dateValue = new Date(e.date);
+						let dayName = weekDays[dateValue.getDay()];
+						scheduleTable.innerHTML += "<tr><td class='dayOfWeek'>"+dayName+"</td><td class='date'>"+e.date+"</td><td class='title'>"+e.title+"</td><td class='start'>"+e.start+"</td><td class='end'>"+e.end+"</td><td class='duration'>"+e.duration+" hrs</td><td class='notes'>"+e.notes+"</td></tr>";
+					}
+				});
+				
+				if (eventCount < 1) {
+					scheduleTable.innerHTML = "No Events Scheduled";
+				}
+				
+				//append content
+				instructorSchedule.appendChild(scheduleTable);
+				scheduleContent += instructorSchedule.innerHTML;
+			});
+			
+			//display output
+			document.getElementById('schedule').innerHTML = scheduleContent;
+
+		//  </ OUTPUT >
+	</script>
+
+
+</body></html>

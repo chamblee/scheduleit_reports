@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0088)file:///C:/Users/chamblee/Documents/Schedule%20it%207/temp/Scheduleit_210224_224100.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	
     <title>Instructor Schedules</title>
@@ -71,10 +70,42 @@
 			background-color: rgba(0, 0, 0, .5);
 			box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 		}
+
+		.printBTN {
+			margin-left: 15px;
+			padding: 5px 10px;
+			background-color: lightblue;
+			color: #4c65bf;
+			border: 1px solid #a9aabb;
+			border-radius: 10px;
+			cursor: pointer;
+		}
+
+		.printBTN:hover {
+			background-color: #e6e6e6;
+		}
+
+		@page {
+			margin-top: 1cm;
+			margin-bottom: 1.cm;
+			margin-left: 1cm;
+			margin-right: 1cm;
+		}
+		
+		@media print {
+			body {
+				background: white;
+				margin: 0;
+			}
+			
+			.noprint {
+				display: none;
+			}
+		}
 	</style>
 </head>
 <body>
-<nav id="instructorDevice 3s"><a href="file:///C:/Users/chamblee/Documents/Schedule%20it%207/temp/Scheduleit_210224_224100.html#Adam">Adam</a> </nav>
+<nav id="instructorLinks" class="noprint"><a href="file:///C:/Users/chamblee/Documents/Schedule%20it%207/temp/Scheduleit_210224_224100.html#Adam">Adam</a> </nav>
 <section id="schedule"></section>
 <footer id="pageFooter"></footer>
 <script>
@@ -325,21 +356,18 @@
 		//-------------------------
 		//   < OUTPUT >
 		//-------------------------
+			let navContent = "";
 			let scheduleContent = "";
 			
 			allInstructors.forEach((i) => {
-				//build nav elements
-				document.getElementById('instructorDevice 3s').innerHTML += "<a href='#"+ i.replace("'", "") +"'>"+ i +"</a> ";
+				navContent += "<a href='#"+ i.replace("'", "") +"'>"+ i +"</a> ";
 
-				//build schedule display elements
-				let instructorSchedule = document.createElement('DIV');
-				instructorSchedule.className = "instructorSchedule";
-				instructorSchedule.innerHTML = "<h3 id='"+ i.replace("'", "") +"'>"+i+"</h3>";
+				let instructorSchedule = "";
+				instructorSchedule = "<div id='"+ i.replace("'", "") +"' class='instructor noprint'><h3 >"+i+"</h3><p class='noprint'><a href='#'>Back to the Top</a><button class='printBTN' data-instructor='"+ i.replace("'", "") +"' onclick='printMe(this)'>Print</button></p>";
 				
-				let scheduleTable = document.createElement('TABLE');
-				scheduleTable.innerHTML = "<tr id='tableHead'><th class='dayOfWeek'></th><th class='date'>Date</th><th class='title'>Event</th><th class='start'>Start</th><th class='end'>End</th><th class='duration'>Duration</th><th class='notes'>Notes</th></tr>";
+				let scheduleTable = "";
+				scheduleTable = "<table><tr id='tableHead'><th class='dayOfWeek'></th><th class='date'>Date</th><th class='title'>Event</th><th class='start'>Start</th><th class='end'>End</th><th class='duration'>Duration</th><th class='notes'>Notes</th></tr>";
 				
-				//parse events
 				let eventCount = 0;
 				let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 				
@@ -348,23 +376,33 @@
 						eventCount++;
 						let dateValue = new Date(e.date);
 						let dayName = weekDays[dateValue.getDay()];
-						scheduleTable.innerHTML += "<tr><td class='dayOfWeek'>"+dayName+"</td><td class='date'>"+e.date+"</td><td class='title'>"+e.title+"</td><td class='start'>"+e.start+"</td><td class='end'>"+e.end+"</td><td class='duration'>"+e.duration+" hrs</td><td class='notes'>"+e.notes+"</td></tr>";
+						scheduleTable += "<tr><td class='dayOfWeek'>"+dayName+"</td><td class='date'>"+e.date+"</td><td class='title'>"+e.title+"</td><td class='start'>"+e.start+"</td><td class='end'>"+e.end+"</td><td class='duration'>"+e.duration+" hrs</td><td class='notes'>"+e.notes+"</td></tr>";
 					}
-				});
+            	});
 				
 				if (eventCount < 1) {
-					scheduleTable.innerHTML = "No Events Scheduled";
+					scheduleTable = "No Events Scheduled";
 				}
 				
-				//append content
-				instructorSchedule.appendChild(scheduleTable);
-				scheduleContent += instructorSchedule.innerHTML;
+				instructorSchedule += scheduleTable + "</table></div>";
+				scheduleContent += instructorSchedule;
 			});
 			
-			//display output
+			document.getElementById('instructorLinks').innerHTML = navContent;
 			document.getElementById('schedule').innerHTML = scheduleContent;
 
-		//  </ OUTPUT >
+
+			//Print Instructor Schedule
+			function printMe(el) {
+				let targetID = el.dataset.instructor;
+				document.getElementById(targetID).classList.remove('noprint');
+				window.print();
+				document.getElementById(targetID).classList.add('noprint');
+			}
+
+		//-------------------------
+		//   </ OUTPUT >
+		//-------------------------
 	</script>
 
 
